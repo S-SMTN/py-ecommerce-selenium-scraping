@@ -11,12 +11,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 
-from typing import TYPE_CHECKING
-
-
-if TYPE_CHECKING:
-    from app.parse import Product
-
 
 async def get_soup(
     client: AsyncClient,
@@ -28,7 +22,10 @@ async def get_soup(
     return soup
 
 
-def get_tasks(client: AsyncClient, product_url_list: List[str]) -> List[Coroutine]:
+def get_tasks(
+        client: AsyncClient,
+        product_url_list: List[str]
+) -> List[Coroutine]:
     tasks = [
         get_soup(client=client, page=url)
         for url in product_url_list
@@ -38,7 +35,10 @@ def get_tasks(client: AsyncClient, product_url_list: List[str]) -> List[Coroutin
 
 def get_more(driver: WebDriver) -> WebElement | None:
     try:
-        return driver.find_element(By.CSS_SELECTOR, "a.ecomerce-items-scroll-more")
+        return driver.find_element(
+            By.CSS_SELECTOR,
+            "a.ecomerce-items-scroll-more"
+        )
     except NoSuchElementException:
         return None
 
